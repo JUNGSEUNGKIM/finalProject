@@ -2,6 +2,8 @@
 import './App.css';
 import {useEffect, useState} from "react";
 import axios from "axios";
+import Test from "./components/test";
+
 function App() {
   const [message, setMessage] = useState('');
 
@@ -16,7 +18,8 @@ function App() {
   }, []);
   return (
       <div className="App">
-        <p>{message}</p>
+
+          <Test/>
       </div>
   );
 }

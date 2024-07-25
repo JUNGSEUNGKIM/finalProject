@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+/gradle
+/backend/src/main/resources/static

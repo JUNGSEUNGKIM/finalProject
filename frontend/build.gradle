@@ -1,37 +1,21 @@
-//plugins {
-//    id 'base'
-//}
-//tasks.named('build') {
-//    dependsOn ':frontend:build'
-//}
+plugins {
+    id 'base'
+}
+
+/*
+     * @name : build.gradle
+     * @date : 2024. 7. 25.
+     * @author : 김정승
+     * @description : // chatGPT 에서 여기서도 진행하라고 하였지만 필요없어서 삭제
+                      // build.gradle 도 필요없는 듯 하다
+ */
+
 //task installDependencies(type: Exec) {
 //    workingDir 'frontend'
 //    commandLine 'npm', 'install'
 //}
 //
-//task buildFrontend(type: Exec) {
-//    workingDir 'frontend'
-//    commandLine 'npm', 'run', 'build'
+//tasks.named('build') {
+//    dependsOn installDependencies, ":buildFrontend"
 //}
-//
-//build.dependsOn installDependencies, buildFrontend
 
-
-plugins {
-    id 'base'
-}
-
-task installDependencies(type: Exec) {
-    workingDir 'frontend'
-    commandLine 'npm', 'install'
-}
-
-task buildFrontend(type: Exec) {
-    workingDir 'frontend'
-    commandLine 'npm', 'run', 'build'
-
-}
-
-tasks.named('build') {
-    dependsOn buildFrontend
-}

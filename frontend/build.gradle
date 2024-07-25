@@ -1,0 +1,37 @@
+//plugins {
+//    id 'base'
+//}
+//tasks.named('build') {
+//    dependsOn ':frontend:build'
+//}
+//task installDependencies(type: Exec) {
+//    workingDir 'frontend'
+//    commandLine 'npm', 'install'
+//}
+//
+//task buildFrontend(type: Exec) {
+//    workingDir 'frontend'
+//    commandLine 'npm', 'run', 'build'
+//}
+//
+//build.dependsOn installDependencies, buildFrontend
+
+
+plugins {
+    id 'base'
+}
+
+task installDependencies(type: Exec) {
+    workingDir 'frontend'
+    commandLine 'npm', 'install'
+}
+
+task buildFrontend(type: Exec) {
+    workingDir 'frontend'
+    commandLine 'npm', 'run', 'build'
+
+}
+
+tasks.named('build') {
+    dependsOn buildFrontend
+}

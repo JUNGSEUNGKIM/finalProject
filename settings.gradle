@@ -1,2 +1,3 @@
 rootProject.name = 'finalProject'
-include 'backend', 'frontend'
+include 'backend'
+//, 'frontend'

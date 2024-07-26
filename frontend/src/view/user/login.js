@@ -2,9 +2,15 @@ import React, {useState} from "react";
 import styles from './login.module.css';
 import axios from "axios";
 import  {useNavigate, useParams} from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { setToken, clearToken } from '../../redux/slices/authSlice';
+
  function Login(props) {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
+     const dispatch = useDispatch();
+     const token = useSelector((state) => state.auth.token);
+
+     const navigate = useNavigate();
+     const [formData, setFormData] = useState({
         id: '',
         password: ''
 
@@ -19,23 +25,25 @@ import  {useNavigate, useParams} from "react-router-dom";
     }
 
     const loginFunction =  ()=>{
-        console.log("버튼 ")
-        console.log(formData)
-        // axios.post(props.serverURL+'/svlogin', formData,{withCredentials: true})
         axios.post(`${process.env.REACT_APP_USER_URL}/login`, JSON.stringify(formData),{
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true
         })
             .then(res=>{
                 console.log('데이터 전송 성공:', res);
-
                 // console.log(props.setIsLoggedIn(res.data));
                 if(res.data) {
+                    const receivedToken = res.data; // 서버에서 받은 토큰
+                    dispatch(setToken(receivedToken));
+                    setTimeout(()=>{
+                        console.log(token)
+                    },0);
+
                     // props.setIsLoggedIn(true);
                     // props.setLoginId(formData.id);
                     // props.setToken(res.data)
                     // navigate("/home");
-                    console.log('데이터 전송 성공:', res);
+                    // console.log('데이터 전송 성공:', res);
                 }else{
                     alert("아이디를 다시 입력해 주세요 ")
                     setFormData(formData => ({ ...formData, id: '', password: '' }));
@@ -49,6 +57,31 @@ import  {useNavigate, useParams} from "react-router-dom";
                 console.error('데이터 전송실패:',error);
             })
     }
+
+    // const logout = () => {
+    //     // dispatch(clearToken());
+    //     setTimeout(()=>{
+    //         console.log(token)
+    //     },0);
+    //  }
+     // function YourComponent() {
+     //     const token = useSelector((state) => state.auth.token);
+     //
+     //     const fetchData = async () => {
+     //         try {
+     //             const response = await axios.get('your-api-endpoint', {
+     //                 headers: {
+     //                     'Authorization': `Bearer ${token}`
+     //                 }
+     //             });
+     //             // 응답 처리
+     //         } catch (error) {
+     //             // 에러 처리
+     //         }
+     //     };
+     //
+     //     // ...
+     // }
 
 
     return (
@@ -100,6 +133,8 @@ import  {useNavigate, useParams} from "react-router-dom";
                                                     </div>
 
                                                     <button type="button" className={styles.loginBtn} onClick={loginFunction}>Log In</button>
+                                                    <button type='button' className={styles.loginBtn} onClick={logout}>Log Out</button>
+
                                                     <a className="login-link" href="forgot-password.php">Forgot
                                                         password?         </a>   /
                                                     <a className="login-link" href="/signup">         Sign Up</a>

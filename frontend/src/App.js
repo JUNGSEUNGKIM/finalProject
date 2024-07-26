@@ -4,7 +4,8 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import Test from "./components/test";
 import Login from "./view/user/login";
-
+import store from './redux/store';
+import {Provider} from "react-redux";
 function App() {
   const [message, setMessage] = useState('');
 
@@ -19,9 +20,13 @@ function App() {
   // }, []);
   return (
       <div className="App">
+          <Provider store={store}>
+              <Test/>
+              <Login/>
 
-          <Test/>
-          <Login/>
+          </Provider>
+
+
       </div>
   );
 }

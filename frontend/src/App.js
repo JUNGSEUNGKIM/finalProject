@@ -3,6 +3,7 @@ import './App.css';
 import {useEffect, useState} from "react";
 import axios from "axios";
 import Test from "./components/test";
+import Login from "./view/user/login";
 
 function App() {
   const [message, setMessage] = useState('');
@@ -20,6 +21,7 @@ function App() {
       <div className="App">
 
           <Test/>
+          <Login/>
       </div>
   );
 }

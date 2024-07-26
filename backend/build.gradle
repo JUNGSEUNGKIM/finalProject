@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '3.3.2'
+    id 'org.springframework.boot' version '3.1.3'
     id 'io.spring.dependency-management' version '1.1.6'
 }
 
@@ -25,21 +25,22 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
+//    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.projectreactor:reactor-test'
+//    testImplementation 'io.projectreactor:reactor-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 /*
@@ -48,25 +49,25 @@ dependencies {
      * @author : 김정승
      * @description : frontend auto build, root build.gradle 에서 진행하려 하였지만 오류가 계속되어 여기서 진행
  */
-bootJar {
-    archiveFileName = 'myapp-backend.jar'
-}
-
-//build 생성 - js
-task buildFrontend(type: Exec) {
-    workingDir "${projectDir}/../frontend"
-    commandLine "/opt/homebrew/bin/npm", "run", "build"
-}
-//build copy -js
-task copyFrontend(type: Copy) {
-    dependsOn buildFrontend
-    from("${projectDir}/../frontend/build")
-    into("${projectDir}/src/main/resources/static")
-}
-// copyFrontend 실행 - js
-processResources {
-    dependsOn copyFrontend
-}
+//bootJar {
+//    archiveFileName = 'myapp-backend.jar'
+//}
+//
+////build 생성 - js
+//task buildFrontend(type: Exec) {
+//    workingDir "${projectDir}/../frontend"
+//    commandLine "/opt/homebrew/bin/npm", "run", "build"
+//}
+////build copy -js
+//task copyFrontend(type: Copy) {
+//    dependsOn buildFrontend
+//    from("${projectDir}/../frontend/build")
+//    into("${projectDir}/src/main/resources/static")
+//}
+//// copyFrontend 실행 - js
+//processResources {
+//    dependsOn copyFrontend
+//}
 
 tasks.named('test') {
     useJUnitPlatform()

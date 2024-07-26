@@ -58,12 +58,12 @@ import { setToken, clearToken } from '../../redux/slices/authSlice';
             })
     }
 
-    // const logout = () => {
-    //     // dispatch(clearToken());
-    //     setTimeout(()=>{
-    //         console.log(token)
-    //     },0);
-    //  }
+    const logout = () => {
+        // dispatch(clearToken());
+        setTimeout(()=>{
+            console.log(token)
+        },0);
+     }
      // function YourComponent() {
      //     const token = useSelector((state) => state.auth.token);
      //
@@ -86,7 +86,7 @@ import { setToken, clearToken } from '../../redux/slices/authSlice';
 
     return (
         <div className="main-page-content">
-            <div id="skill">
+            <div id="skill" >
                 <div className="skill-main">
 
                     {/* <!-- ================================ 배너 =============================== --> */}

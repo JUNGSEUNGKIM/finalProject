@@ -28,24 +28,23 @@ public class UserController {
     public ResponseEntity<?> userLogin(@RequestBody UserInfo userInfo){
 //        userMapper.toString();
         if (userInfo == null) {
-            return ResponseEntity.badRequest().body("User information is missing");
+            return ResponseEntity.ok("fail:아이디와 비밀번호를 입력해 주세요");
         }
         String id = userInfo.getId();
         String pass = userInfo.getPassword();
         if (id == null || pass == null) {
-            return ResponseEntity.badRequest().body("ID or password is missing");
+            return ResponseEntity.ok("fail:아이디와 비밀번호를 입력해 주세요");
         }
-        System.out.println("::::::::::::::"+id+pass);
 
         userInfo = userMapper.checkedUser(userInfo);
         if(userInfo == null){
             System.out.println("hello");
 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패: ");
+            return ResponseEntity.ok("fail:아이디 또는 비밀번호가 맞지 않습니다. 다시 입력해 주세요.");
         }else {
             String token = jwtTokenProvider.generateToken(userInfo);
-            System.out.println(":::::::::결과"+jwtTokenProvider.validateToken(token));
-            return ResponseEntity.ok(token);
+//            System.out.println(":::::::::결과"+jwtTokenProvider.validateToken(token));
+            return ResponseEntity.ok("succeed:"+token);
         }
     }
 }

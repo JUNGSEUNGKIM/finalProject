@@ -39,8 +39,8 @@ function App() {
             <Header></Header>
 
                 <Routes>
-                    <Route path="/" element={<Login></Login>}/>
-            {/*        /!*<Route path="/" element={<Test></Test>}/>*!/*/}
+                    <Route path="/login" element={<Login></Login>}/>
+                    <Route path="/" element={<Test></Test>}/>
                     <Route path="board" element={<BoardMain posts={samplePosts} />}/>
 
                 </Routes>

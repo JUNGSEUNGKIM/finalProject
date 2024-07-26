@@ -22,15 +22,20 @@ import {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, {useEffect, useRef} from "react";
+import  {useNavigate, useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
 gsap.registerPlugin(ScrollTrigger);
 
 
 function Header(props) {
+    const token = useSelector((state) => state.auth.token);
+
     const { variant, extra, children, ...rest } = props;
     const { isOpen, onOpen, onClose } = useDisclosure();
     const showMiddleNav = useBreakpointValue({ base: false, xl: true });
     const headerRef = useRef();
     const gridRef = useRef();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const header = headerRef.current;
@@ -67,7 +72,12 @@ function Header(props) {
                 <Flex h='4' mb='2' alignItems="center" justifyContent='flex-end' maxWidth='container.xl' w='100%'  >
 
                     <HStack as="nav" textAlign='center' spacing={4} fontSize='0.8em' w='200px'>
-                        <Box w='50px'>로그인</Box>
+                        {token==null?
+                            <Box w='50px' onClick={()=>{navigate("/login")}}>로그인</Box>:
+                            <Box w='50px' onClick={()=>{navigate("/login")}}>로그아웃</Box>
+
+                        }
+
                         <Box w='50px'>회원가입</Box>
                         <Box w='50px'>고객센터</Box>
                     </HStack>

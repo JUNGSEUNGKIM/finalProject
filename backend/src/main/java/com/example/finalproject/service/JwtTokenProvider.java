@@ -1,4 +1,4 @@
-package com.example.finalproject.controller;
+package com.example.finalproject.service;
 
 import io.jsonwebtoken.*;
 import com.example.finalproject.domain.UserInfo;

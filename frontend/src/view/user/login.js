@@ -22,7 +22,10 @@ import  {useNavigate, useParams} from "react-router-dom";
         console.log("버튼 ")
         console.log(formData)
         // axios.post(props.serverURL+'/svlogin', formData,{withCredentials: true})
-        axios.post(`${process.env.REACT_APP_USER_URL}/login`, formData,{withCredentials: true})
+        axios.post(`${process.env.REACT_APP_USER_URL}/login`, JSON.stringify(formData),{
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+        })
             .then(res=>{
                 console.log('데이터 전송 성공:', res);
 

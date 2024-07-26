@@ -1,5 +1,11 @@
 package com.example.finalproject.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+
+import java.util.stream.Collectors;
+
 public class UserInfo {
     private String id;
     private String password;
@@ -26,6 +32,11 @@ public class UserInfo {
         this.tagfamily = tagfamily;
         this.taglike = taglike;
     }
+//    public UserInfo(String username, String password, Collection<? extends GrantedAuthority> authorities){
+//        super(email, password,
+//                roleNames.stream().map(str ->
+//                        new SimpleGrantedAuthority("ROLE_"+str)).collect(Collectors.toList()));
+//    }
 
     public String getId() {
         return id;

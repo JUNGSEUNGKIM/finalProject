@@ -1,24 +1,16 @@
 import * as React from 'react'
 
-import {Box, extendBaseTheme, theme as chakraTheme,} from '@chakra-ui/react'
 import Header from "./components/header/Header";
 
 import VideoBackground from "./components/video/VideoBackground";
-import PostCard from "./components/board/PostCard";
 import BoardMain from "./components/board/BoardMain";
 import store from "./redux/store";
 import Test from "./components/test";
 import Login from "./view/user/login";
 import {Provider} from "react-redux";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import ScrollToTop from "./components/scroll/scrollToTop";
 
-const { Button } = chakraTheme.components
-
-const theme = extendBaseTheme({
-    components: {
-        Button,
-    },
-})
 
 function App() {
     const samplePosts = Array.from({ length: 50 }, (_, index) => ({
@@ -31,31 +23,17 @@ function App() {
     return (
 
     <div className="App">
-
-
-
-
+        <ScrollToTop/>
         <Provider store={store}>
             <Header></Header>
-
                 <Routes>
                     <Route path="/login" element={<Login></Login>}/>
-                    <Route path="/" element={<Test></Test>}/>
+                    <Route path="/" element={<VideoBackground />}/>
                     <Route path="board" element={<BoardMain posts={samplePosts} />}/>
-
                 </Routes>
             <Test/>
-            {/*</Router>*/}
-            {/*<VideoBackground></VideoBackground>*/}
-            {/*<Box h='50vh'></Box>*/}
-
-
         </Provider>
-
-
     </div>
     )
 }
-
-
 export default App;

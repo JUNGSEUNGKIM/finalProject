@@ -14,7 +14,6 @@ import {Box, Center, Image, Text, VStack} from "@chakra-ui/react";
      const [formData, setFormData] = useState({
         id: '',
         password: ''
-
     })
     const handleChange = (e)=>{
         const { name, value, type, checked } = e.target;
@@ -23,7 +22,6 @@ import {Box, Center, Image, Text, VStack} from "@chakra-ui/react";
             [name]: value
         })
     }
-
     const loginFunction =  ()=>{
         axios.post(`${process.env.REACT_APP_USER_URL}/login`, JSON.stringify(formData),{
             headers: { 'Content-Type': 'application/json' },
@@ -35,59 +33,26 @@ import {Box, Center, Image, Text, VStack} from "@chakra-ui/react";
                 if(res.data.split(":")[0] === "succeed") {
                     const receivedToken = res.data; // 서버에서 받은 토큰
                     dispatch(setToken(receivedToken));
-                    setTimeout(()=>{
-                        console.log(token)
-                    },0);
-
-                    // props.setIsLoggedIn(true);
-                    // props.setLoginId(formData.id);
-                    // props.setToken(res.data)
-                    // navigate("/home");
-                    // console.log('데이터 전송 성공:', res);
+                    navigate("/")
                 }else{
                     alert(res.data)
                     setFormData(formData => ({ ...formData, id: '', password: '' }));
-                    // console.log(formData)
                 }
-
-
-                //
         })
             .catch(error=>{
                 console.error('데이터 전송실패:',error);
             })
     }
-
     const logout = () => {
         dispatch(clearToken());
         setTimeout(()=>{
             console.log(token)
         },0);
      }
-     // function YourComponent() {
-     //     const token = useSelector((state) => state.auth.token);
-     //
-     //     const fetchData = async () => {
-     //         try {
-     //             const response = await axios.get('your-api-endpoint', {
-     //                 headers: {
-     //                     'Authorization': `Bearer ${token}`
-     //                 }
-     //             });
-     //             // 응답 처리
-     //         } catch (error) {
-     //             // 에러 처리
-     //         }
-     //     };
-     //
-     //     // ...
-     // }
-
 
     return (
         <div className="main-page-content">
             <VStack spacing={0} align="stretch" w='100%'>
-
                 <Box
                     w="100%"
                     h={{base: "200px", md: "400px"}}

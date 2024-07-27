@@ -35,34 +35,6 @@ function VideoBackground () {
                 }
             }
         })
-        //     = ScrollTrigger.create({
-        //     trigger: bodyRef.current,
-        //     start: "top top ",
-        //     end: "300% top",
-        //     scrub: true,
-        //     markers: true,
-        //     pin:true,
-        //     // pinSpacing: false,
-        //     onEnter: () => {
-        //         gsap.set(bodyRef.current,{position: "fixed", clearProps: "transform" });
-        //     },onLeave: () => {
-        //         gsap.set(bodyRef.current, {position:"absolute", clearProps: "transform" });
-        //     },
-        //     onLeaveBack: () => {
-        //         gsap.set(bodyRef.current, {position:"absolute", clearProps: "transform" });
-        //     },
-        //     onEnterBack: () => {
-        //         gsap.set(bodyRef.current, {position:"fixed", clearProps: "transform"});
-        //     }
-        // });
-        // gsap.timeline({
-        //     scrollTrigger: {
-        //         trigger: bodyRef.current,
-        //         start: "top top",
-        //         end: "300% top",
-        //         scrub: true,
-        //     }
-        // })
         tl.to(".typo01", { y: 0, opacity: 1, duration: 1 })
             .to(".typo02", { y: 0, opacity: 1, duration: 1 }, "-=0.5")
             .to('.typo03', { opacity: 0, duration: 1 })
@@ -71,10 +43,12 @@ function VideoBackground () {
             .to(".video-background", { opacity: 0, duration: 2 }); // 비디오 천천히 페이드 아웃
         return () => {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            // gsap.globalTimeline.clear();
+            // gsap.killTweensOf(bodyin);
         };
     }, []);
     return (
-      <>
+      <div id="main-video">
         <Box position="relative" height="100vh" overflow="hidden" ref={bodyRef}  >
             {/* 비디오 배경 */}
             <Box
@@ -94,13 +68,10 @@ function VideoBackground () {
                 objectFit='cover'
                 transform="translate(-50%, -50%)"
                 zIndex="-1"
-
             >
                 <source src="12052297_3840_2160_60fps.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </Box>
-
-            {/* 콘텐츠 */}
             <Flex
                 direction="column"
                 align="center"
@@ -110,12 +81,6 @@ function VideoBackground () {
                 textAlign="center"
                 p={5}
             >
-                {/*<Heading as="h1" size="2xl" mb={4}>*/}
-                {/*    비디오 배경 예제*/}
-                {/*</Heading>*/}
-                {/*<Text fontSize="xl">*/}
-                {/*    Chakra UI를 사용하여 비디오 배경을 설정하는 방법을 배우세요.*/}
-                {/*</Text>*/}
                 <HStack>
                         <Heading className='typo01' as="h1" size="2xl" mb={4}>
                             비디오
@@ -134,11 +99,8 @@ function VideoBackground () {
                 </HStack>
             </Flex>
         </Box>
-            <Box height='10000vh'>
-
-            </Box>
-
-            </>
+          <Box height='10000vh'></Box>
+      </div>
 
     );
 };

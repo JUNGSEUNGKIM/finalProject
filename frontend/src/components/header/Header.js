@@ -5,44 +5,46 @@ import {
     MenuButton,
     MenuList,
     MenuItem,
-    Stack, InputGroup, InputLeftElement, Input, Divider, HStack, useBreakpointValue
+    Stack, InputGroup, InputLeftElement, Input, Divider, HStack, useBreakpointValue, useColorMode
 } from "@chakra-ui/react";
 
-import { Grid, GridItem, useDisclosure} from '@chakra-ui/react'
+import { useDisclosure} from '@chakra-ui/react'
 import { Box } from "@chakra-ui/react"
 import {
     AddIcon, CheckIcon, CloseIcon, CopyIcon,
     DragHandleIcon,
     EditIcon,
     ExternalLinkIcon,
-    HamburgerIcon, PhoneIcon,
+    HamburgerIcon,
     RepeatIcon,
     SearchIcon
 } from "@chakra-ui/icons";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, {useEffect, useRef} from "react";
-import  {useNavigate, useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import  {useNavigate, useLocation} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import { setToken, clearToken } from '../../redux/slices/authSlice';
 gsap.registerPlugin(ScrollTrigger);
 
 
 function Header(props) {
+    const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
 
     const { variant, extra, children, ...rest } = props;
     const { isOpen, onOpen, onClose } = useDisclosure();
     const showMiddleNav = useBreakpointValue({ base: false, xl: true });
     const headerRef = useRef();
-    const gridRef = useRef();
     const navigate = useNavigate();
-
+    const location = useLocation();
+    const { colorMode, toggleColorMode } = useColorMode();
     useEffect(() => {
+        console.log("Current color mode:", colorMode);
+        if (colorMode === 'dark') {
+            toggleColorMode();
+        }
         const header = headerRef.current;
-        const grid = gridRef.current;
-
-
-
         gsap.to(header, {
             backgroundColor: "rgba(255, 255, 255, 1)",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
@@ -58,6 +60,22 @@ function Header(props) {
         });
 
     }, []);
+    const cleanupPageAnimations = (pageId) => {
+        ScrollTrigger.getAll().forEach(trigger => {
+            if (trigger.vars.trigger && trigger.vars.trigger.id === pageId) {
+                trigger.kill();
+            }
+        });
+        gsap.killTweensOf(`#${pageId}, #${pageId} *`);
+    };
+    const handleNavigation = (path,tagId) => {
+        if (location.pathname === '/') {
+            cleanupPageAnimations(tagId);
+        } else if (location.pathname === '/board') {
+            cleanupPageAnimations(tagId);
+        }
+        navigate(path);
+    };
     return (
         <div>
             <Flex flexDirection="column"  alignItems="center"  px={4} minWidth='370px'  ref={headerRef}
@@ -73,8 +91,10 @@ function Header(props) {
 
                     <HStack as="nav" textAlign='center' spacing={4} fontSize='0.8em' w='200px'>
                         {token==null?
-                            <Box w='50px' onClick={()=>{navigate("/login")}}>로그인</Box>:
-                            <Box w='50px' onClick={()=>{navigate("/login")}}>로그아웃</Box>
+                            <Box w='50px' onClick={()=>{handleNavigation("/login","main-video")
+                                                                }}>로그인</Box>:
+                            <Box w='50px' onClick={()=>{dispatch(clearToken(token))
+                                                                navigate("/")}}>로그아웃</Box>
 
                         }
 

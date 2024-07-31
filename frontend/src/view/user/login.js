@@ -28,8 +28,7 @@ import {Box, Center, Image, Text, VStack} from "@chakra-ui/react";
             withCredentials: true
         })
             .then(res=>{
-                console.log('데이터 전송 성공:', res);
-                // console.log(props.setIsLoggedIn(res.data));
+                // console.log('데이터 전송 성공:', res);
                 if(res.data.split(":")[0] === "succeed") {
                     const receivedToken = res.data; // 서버에서 받은 토큰
                     dispatch(setToken(receivedToken));
@@ -78,7 +77,7 @@ import {Box, Center, Image, Text, VStack} from "@chakra-ui/react";
                     >
                         <Center h="100%">
                             <Text fontSize={{base: "2xl", md: "4xl"}} color="white" fontWeight="bold">
-                                게시판 제목
+                                로그인
                             </Text>
                         </Center>
                     </Box>

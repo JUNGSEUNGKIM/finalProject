@@ -3,19 +3,22 @@ import {
     SimpleGrid,
     Box,
     Text,
-    Button,
     Spinner,
     Center,
     VStack,
     InputGroup,
-    InputLeftElement,
-    Input, InputRightElement, Flex
-    ,Image
+    InputRightElement,
+    Input,
+    Flex,
+    Image,
+    Button,
+    HStack
 } from '@chakra-ui/react';
-import PostCard from './PostCard';
+import PostCard from '../../components/board/PostCard';
 import {Search2Icon} from "@chakra-ui/icons";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import useWindowSize from "../../hooks/useWindowSize";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,12 +30,14 @@ function BoardMain({posts}) {
     const totalPages = Math.ceil(posts.length / postsPerPage);
     const observerTarget = useRef(null);
     const overlayRef = useRef(null);
+    const size = useWindowSize();
+    const isLargeScreen = size.width >= 1024; // lg 브레이크포인트
 
     useEffect(() => {
         const overlay = overlayRef.current;
 
         gsap.to(overlay, {
-            backgroundColor: 'rgba(0,0,0,1)localhost', // 최종 어두운 색상
+            backgroundColor: 'rgba(0,0,0,1)',
             scrollTrigger: {
                 trigger: overlay,
                 start: 'top top',
@@ -40,10 +45,6 @@ function BoardMain({posts}) {
                 scrub: true,
             },
         });
-    }, []);
-
-    useEffect(() => {
-        loadMorePosts();
     }, []);
 
     const loadMorePosts = () => {
@@ -58,30 +59,49 @@ function BoardMain({posts}) {
             setDisplayPosts(prevPosts => [...prevPosts, ...newPosts]);
             setCurrentPage(prevPage => prevPage + 1);
             setIsLoading(false);
-        }, 1000); // 1초 지연을 주어 로딩 효과를 시뮬레이션합니다.
+        }, 1000);
     };
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            entries => {
-                if (entries[0].isIntersecting && !isLoading) {
-                    loadMorePosts();
-                }
-            },
-            { threshold: 1.0 }
-        );
-        if (observerTarget.current) {
-            observer.observe(observerTarget.current);
-        }
-        return () => {
+        if (!isLargeScreen) {
+            const observer = new IntersectionObserver(
+                entries => {
+                    if (entries[0].isIntersecting && !isLoading) {
+                        loadMorePosts();
+                    }
+                },
+                { threshold: 1.0 }
+            );
             if (observerTarget.current) {
-                observer.unobserve(observerTarget.current);
+                observer.observe(observerTarget.current);
             }
-        };}, [isLoading]);
+            return () => {
+                if (observerTarget.current) {
+                    observer.unobserve(observerTarget.current);
+                }
+            };
+        }
+    }, [isLoading, isLargeScreen]);
+
+    useEffect(() => {
+        if (isLargeScreen) {
+            setDisplayPosts(posts.slice(0, postsPerPage));
+            setCurrentPage(1);
+        } else {
+            loadMorePosts();
+        }
+    }, [isLargeScreen]);
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+        const startIndex = (newPage - 1) * postsPerPage;
+        const endIndex = startIndex + postsPerPage;
+        setDisplayPosts(posts.slice(startIndex, endIndex));
+    };
 
     return (
         <VStack spacing={0} align="stretch" w='100%'>
-
+            {/* ... (기존 코드) ... */}
             <Box
                 w="100%"
                 h={{ base: "200px", md: "400px" }}
@@ -134,32 +154,37 @@ function BoardMain({posts}) {
                         />
                     </InputGroup>
                 </Flex>
-                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="5" maxWidth='container.xl' margin="0 auto" px={{base:2, md:5, lg:10}}>
-                    <PostCard
-                        key={'1'}
-                        title='Sample Post'
-                        author='Author Name'
-                        date='Date'
-                        content='This is a sample post content. It should be brief and interesting to'
-                        imageUrl='/img/image01.jpg'
-                    />
-                    {displayPosts.map((post, index) => (
-                        <PostCard key={index} {...post} />
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="5" maxWidth='container.xl' margin="0 auto" px={{base:2, md:5, lg:10}}>
+                {displayPosts.map((post, index) => (
+                    <PostCard key={index} {...post} />
+                ))}
+            </SimpleGrid>
+            {!isLargeScreen && isLoading && (
+                <Center mt={4}>
+                    <Spinner />
+                </Center>
+            )}
+            {!isLargeScreen && !isLoading && currentPage <= totalPages && (
+                <div ref={observerTarget} style={{ height: '10px', margin: '20px 0' }} />
+            )}
+            {!isLargeScreen && currentPage > totalPages && (
+                <Center mt={4}>
+                    <Text>모든 게시물을 불러왔습니다.</Text>
+                </Center>
+            )}
+            {isLargeScreen && (
+                <HStack justifyContent="center" mt={4} spacing={2}>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <Button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            colorScheme={currentPage === page ? "blue" : "gray"}
+                        >
+                            {page}
+                        </Button>
                     ))}
-                </SimpleGrid>
-                {isLoading && (
-                    <Center mt={4}>
-                        <Spinner />
-                    </Center>
-                )}
-                {!isLoading && currentPage <= totalPages && (
-                    <div ref={observerTarget} style={{ height: '10px', margin: '20px 0' }} />
-                )}
-                {currentPage > totalPages && (
-                    <Center mt={4}>
-                        <Text>모든 게시물을 불러왔습니다.</Text>
-                    </Center>
-                )}
+                </HStack>
+            )}
             </Box>
         </VStack>
     );

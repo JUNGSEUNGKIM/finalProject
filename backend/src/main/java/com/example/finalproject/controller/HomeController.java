@@ -32,6 +32,7 @@ public class HomeController  implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         Path currentPath = Paths.get("").toAbsolutePath();
         String uploadsDirectory = currentPath.resolve("uploads").toString();
+        System.out.println(uploadsDirectory+":::::::::::::::::::::::");
         String reactBuildDirectory = currentPath.resolve("src/main/resources/static").toString();
 
         registry.addResourceHandler("/uploads/**")

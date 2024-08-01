@@ -262,9 +262,10 @@ function Header(props) {
                                            color='black'
                                            bg='gba(245, 245, 220, 0.0001)'
                                     />
-                                    <InputLeftElement pointerEvents='none' >
-                                        <SearchIcon color='gray.300' />
-
+                                    <InputLeftElement>
+                                        <SearchIcon color='gray.300' onClick={()=>{
+                                            alert("hello")
+                                        }} />
                                     </InputLeftElement>
                                 </InputGroup>
 

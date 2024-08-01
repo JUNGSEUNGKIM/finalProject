@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import {
     SimpleGrid,
     Box,
@@ -19,20 +19,24 @@ import {Search2Icon} from "@chakra-ui/icons";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import useWindowSize from "../../hooks/useWindowSize";
+import axios from "axios";
+import {useSelector} from "react-redux";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function BoardMain({posts}) {
+function BoardMain() {
     const [displayPosts, setDisplayPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-    const postsPerPage = 12;
-    const totalPages = Math.ceil(posts.length / postsPerPage);
+    const [totalPages, setTotalPages] = useState(1);
     const observerTarget = useRef(null);
     const overlayRef = useRef(null);
     const size = useWindowSize();
-    const isLargeScreen = size.width >= 1024; // lg 브레이크포인트
+    const changeSize = size.width <= 1024 // lg 브레이크포인트
+    const isLargeScreen =  size.width >= 1024
 
+
+    const token = useSelector((state) => state.auth.token);
     useEffect(() => {
         const overlay = overlayRef.current;
 
@@ -46,58 +50,87 @@ function BoardMain({posts}) {
             },
         });
     }, []);
+    const fetchData = async (newPage) => {
+        if(isLargeScreen){
+            window.scrollTo({
+                top:0 ,
+                behavior: 'smooth' // 부드러운 스크롤
+            });
+        }
+        try {
+            const [response] = await Promise.all([
+                axios.get( `${process.env.REACT_APP_BOARD_URL}/boardmain?page=${newPage}`,{headers: {
+                        Authorization: token
+                    }}, { withCredentials: true })
+            ]);
+            const responseData = response.data;
+            setCurrentPage(responseData.currentPage);
+            setTotalPages(responseData.totalPage);
+            setDisplayPosts(responseData.board)
+            console.log(displayPosts)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     const loadMorePosts = () => {
-        if (currentPage > totalPages) return;
-
-        setIsLoading(true);
-        const startIndex = (currentPage - 1) * postsPerPage;
-        const endIndex = startIndex + postsPerPage;
-        const newPosts = posts.slice(startIndex, endIndex);
-
-        setTimeout(() => {
-            setDisplayPosts(prevPosts => [...prevPosts, ...newPosts]);
-            setCurrentPage(prevPage => prevPage + 1);
-            setIsLoading(false);
-        }, 1000);
-    };
-
-    useEffect(() => {
-        if (!isLargeScreen) {
-            const observer = new IntersectionObserver(
-                entries => {
-                    if (entries[0].isIntersecting && !isLoading) {
-                        loadMorePosts();
-                    }
-                },
-                { threshold: 1.0 }
-            );
-            if (observerTarget.current) {
-                observer.observe(observerTarget.current);
-            }
-            return () => {
-                if (observerTarget.current) {
-                    observer.unobserve(observerTarget.current);
+            if (currentPage > totalPages) return;
+            const newPosts = displayPosts;
+            fetchData(currentPage)
+            setIsLoading(true);
+            setTimeout(() => {
+                setDisplayPosts(prevPosts => [...newPosts, ...prevPosts]);
+                if(size.width !== undefined && !isLargeScreen) {
+                    setCurrentPage(prevPage => prevPage + 1);
                 }
-            };
+                setIsLoading(false);
+            }, 1000);
+
+    };
+    useEffect(() => {
+        console.log("여기가 먼저야?")
+        const observer = new IntersectionObserver(
+            entries => {
+                if (entries[0].isIntersecting && !isLoading) {
+                    loadMorePosts();
+                }
+            },
+            {threshold: 1.0}
+        );
+        if(size.width !== undefined) {
+            if (!isLargeScreen) {
+                if (observerTarget.current) {
+                    observer.observe(observerTarget.current);
+                }
+                return () => {
+                    if (observerTarget.current) {
+                        observer.unobserve(observerTarget.current);
+                    }
+                };
+            }
+        }else{
+            return () => {
+                fetchData(currentPage)
+                if (observerTarget.current) {
+                    observer.observe(observerTarget.current);
+                }
+            }
         }
-    }, [isLoading, isLargeScreen]);
+    }, [isLoading,isLargeScreen]);
 
     useEffect(() => {
-        if (isLargeScreen) {
-            setDisplayPosts(posts.slice(0, postsPerPage));
-            setCurrentPage(1);
-        } else {
-            loadMorePosts();
+        return ()=>{
+            if(size.width !== undefined){
+                console.log("kkk 먼저야?")
+                window.scrollTo({
+                    top:0 ,
+                    behavior: 'smooth' // 부드러운 스크롤
+                });
+                setCurrentPage(1)
+                fetchData(1)
+            }
         }
-    }, [isLargeScreen]);
-
-    const handlePageChange = (newPage) => {
-        setCurrentPage(newPage);
-        const startIndex = (newPage - 1) * postsPerPage;
-        const endIndex = startIndex + postsPerPage;
-        setDisplayPosts(posts.slice(startIndex, endIndex));
-    };
+    }, [changeSize,isLargeScreen]);
 
     return (
         <VStack spacing={0} align="stretch" w='100%'>
@@ -177,7 +210,7 @@ function BoardMain({posts}) {
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                         <Button
                             key={page}
-                            onClick={() => handlePageChange(page)}
+                            onClick={() => fetchData(page)}
                             colorScheme={currentPage === page ? "blue" : "gray"}
                         >
                             {page}

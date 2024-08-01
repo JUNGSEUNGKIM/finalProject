@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.finalproject.repository.mybatis.BoardMapper">
+    <resultMap id="boarderMainResultMap" type="com.example.finalproject.domain.board.BoardMain">
+        <result property="boarder_code" column="boarder_code" />
+        <result property="author" column="author" />
+        <result property="title" column="title" />
+        <result property="created_at" column="created_at" />
+        <result property="content" column="content"  />
+        <result property="views" column="views" />
+        <result property="likes" column="likes" />
+        <result property="image_name" column="image_name" />
+        <result property="comments_count" column="comments_count" />
+    </resultMap>
+
+    <select id="boardmain"  resultMap="boarderMainResultMap">
+        <![CDATA[ SELECT
+            boarder_code, title, author, to_char(created_at, 'YYYY-MM-DD') as created_at, views, likes, content,image_name,
+            (SELECT COUNT(*) FROM boarder_comments c WHERE c.boarder_code = b.boarder_code) AS comments_count
+        FROM(
+                SELECT
+                    b.boarder_code, b.title, u.id AS author, b.created_at, b.views, b.likes, b.content,b.image_name,
+                    ROW_NUMBER() OVER (]]>
+        <if test="startRow != -1">
+            <![CDATA[ ORDER BY b.created_at DESC]]>
+        </if>
+        <if test="startRow == -1">
+            <![CDATA[ ORDER BY b.likes DESC]]>
+        </if>
+        <![CDATA[ ) AS rn
+                FROM boarder b
+                         JOIN USERS u ON b.user_id = u.id
+                WHERE 1=1) b
+        WHERE rn BETWEEN #{startRow} AND #{endRow}]]>
+    </select>
+
+    <select id="totalPage" >
+        select count(*) from boarder
+    </select>
+
+</mapper>

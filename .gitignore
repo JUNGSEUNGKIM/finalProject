@@ -45,7 +45,7 @@ buildOutputCleanup.lock
 .pnp.js
 .build
 /coverage
-
+/uploads
 # production
 /ClassbuildClass_local
 

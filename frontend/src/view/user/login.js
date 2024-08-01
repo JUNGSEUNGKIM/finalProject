@@ -30,7 +30,7 @@ import {Box, Center, Image, Text, VStack} from "@chakra-ui/react";
             .then(res=>{
                 // console.log('데이터 전송 성공:', res);
                 if(res.data.split(":")[0] === "succeed") {
-                    const receivedToken = res.data; // 서버에서 받은 토큰
+                    const receivedToken = res.data.split(":")[1]; // 서버에서 받은 토큰
                     dispatch(setToken(receivedToken));
                     navigate("/")
                 }else{

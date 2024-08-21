@@ -23,4 +23,4 @@ function useWindowSize() {
     return windowSize;
 }
 
-export default useWindowSize; 
+export default useWindowSize;

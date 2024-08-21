@@ -29,12 +29,12 @@ import {Box, Center, Image, Text, VStack} from "@chakra-ui/react";
         })
             .then(res=>{
                 // console.log('데이터 전송 성공:', res);
-                if(res.data.split(":")[0] === "succeed") {
-                    const receivedToken = res.data.split(":")[1]; // 서버에서 받은 토큰
+                if(res.data.succeed) {
+                    const receivedToken = res.data; // 서버에서 받은 토큰
                     dispatch(setToken(receivedToken));
                     navigate("/")
                 }else{
-                    alert(res.data)
+                    alert(res.data.fail)
                     setFormData(formData => ({ ...formData, id: '', password: '' }));
                 }
         })
@@ -59,7 +59,7 @@ import {Box, Center, Image, Text, VStack} from "@chakra-ui/react";
                     overflow="hidden"
                 >
                     <Image
-                        src="/img/background.jpg"
+                        src="/img/header_img_1.png"
                         alt="Background"
                         objectFit="cover"
                         objectPosition="50% 20%"
@@ -75,9 +75,9 @@ import {Box, Center, Image, Text, VStack} from "@chakra-ui/react";
                         h="100%"
                         bg="rgba(0,0,0,0)"  // 초기 투명 상태
                     >
-                        <Center h="100%">
-                            <Text fontSize={{base: "2xl", md: "4xl"}} color="white" fontWeight="bold">
-                                로그인
+                        <Center h="150%">
+                            <Text fontSize={{base: "2xl", md: "6xl"}} color="white" fontWeight="bold">
+                                Log In
                             </Text>
                         </Center>
                     </Box>
@@ -99,8 +99,8 @@ import {Box, Center, Image, Text, VStack} from "@chakra-ui/react";
                                         <div className="main-title text-center wow fadeIn">
                                             {/* <!-- ================================ LOGIN =============================== --> */}
                                             <div className="login-wrapper" style={{textAlign: 'center'}}>
-                                                <div className="login-content" style={{width: '100%'}}>
-                                                    <h2 className="login-title" style={{fontSize: '3em'}}>Log In </h2>
+                                                <div className="login-content" style={{width: '100%',}}>
+                                                    <h2 className="login-title" style={{fontSize: '3em', height:'2em'}}>    </h2>
                                                     <form className="login-form validated-form" id="login-form"
                                                           name="login-form" method="post"
                                                     >

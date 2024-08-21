@@ -12,7 +12,9 @@ import {
     Flex,
     Image,
     Button,
-    HStack
+    HStack,
+    Tooltip,
+    keyframes
 } from '@chakra-ui/react';
 import PostCard from '../../components/board/PostCard';
 import {Search2Icon} from "@chakra-ui/icons";
@@ -21,35 +23,27 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import useWindowSize from "../../hooks/useWindowSize";
 import axios from "axios";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {Map, MapMarker} from "react-kakao-maps-sdk";
+import HeaderImg from "../../components/header/HeaderImg";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function BoardMain() {
+function BoardMain({page}) {
     const [displayPosts, setDisplayPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [totalPages, setTotalPages] = useState(1);
     const observerTarget = useRef(null);
-    const overlayRef = useRef(null);
     const size = useWindowSize();
     const changeSize = size.width <= 1024 // lg 브레이크포인트
     const isLargeScreen =  size.width >= 1024
+    const navigate = useNavigate();
+    const pageCheck = useRef(page)
+    const userCheck = useRef()
 
 
     const token = useSelector((state) => state.auth.token);
-    useEffect(() => {
-        const overlay = overlayRef.current;
-
-        gsap.to(overlay, {
-            backgroundColor: 'rgba(0,0,0,1)',
-            scrollTrigger: {
-                trigger: overlay,
-                start: 'top top',
-                end: 'bottom top',
-                scrub: true,
-            },
-        });
-    }, []);
     const fetchData = async (newPage) => {
         if(isLargeScreen){
             window.scrollTo({
@@ -58,8 +52,9 @@ function BoardMain() {
             });
         }
         try {
+            // console.log(page)
             const [response] = await Promise.all([
-                axios.get( `${process.env.REACT_APP_BOARD_URL}/boardmain?page=${newPage}`,{headers: {
+                axios.get( `${process.env.REACT_APP_BOARD_URL}${page}main?page=${newPage}`,{headers: {
                         Authorization: token
                     }}, { withCredentials: true })
             ]);
@@ -67,7 +62,8 @@ function BoardMain() {
             setCurrentPage(responseData.currentPage);
             setTotalPages(responseData.totalPage);
             setDisplayPosts(responseData.board)
-            console.log(displayPosts)
+            userCheck.current = responseData.userCheck;
+            // console.log(displayPosts)
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -88,7 +84,6 @@ function BoardMain() {
 
     };
     useEffect(() => {
-        console.log("여기가 먼저야?")
         const observer = new IntersectionObserver(
             entries => {
                 if (entries[0].isIntersecting && !isLoading) {
@@ -119,9 +114,9 @@ function BoardMain() {
     }, [isLoading,isLargeScreen]);
 
     useEffect(() => {
+
         return ()=>{
             if(size.width !== undefined){
-                console.log("kkk 먼저야?")
                 window.scrollTo({
                     top:0 ,
                     behavior: 'smooth' // 부드러운 스크롤
@@ -129,46 +124,41 @@ function BoardMain() {
                 setCurrentPage(1)
                 fetchData(1)
             }
+
         }
     }, [changeSize,isLargeScreen]);
+    useEffect(() => {
+        // console.log(pageCheck.current)
+        if(pageCheck.current!==page){
+          fetchData(1)
+        }
+        pageCheck.current = page;
+        // console.log(pageCheck.current)
+
+    }, [page]);
+
+    const [scrollY, setScrollY] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollY(window.scrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+    const buttonPosition = Math.min(20 + scrollY * 0.1, 40);
 
     return (
         <VStack spacing={0} align="stretch" w='100%'>
-            {/* ... (기존 코드) ... */}
-            <Box
-                w="100%"
-                h={{ base: "200px", md: "400px" }}
-                position="relative"
-                overflow="hidden"
-            >
-                <Image
-                    src="/img/background.jpg"
-                    alt="Background"
-                    objectFit="cover"
-                    objectPosition="50% 20%"
-                    w="100%"
-                    h="100%"
-                />
-                <Box
-                    ref={overlayRef}
-                    position="absolute"
-                    top="0"
-                    left="0"
-                    w="100%"
-                    h="100%"
-                    bg="rgba(0,0,0,0)"  // 초기 투명 상태
-                >
-                    <Center h="100%">
-                        <Text fontSize={{ base: "2xl", md: "4xl" }} color="white" fontWeight="bold">
-                            게시판 제목
-                        </Text>
-                    </Center>
-                </Box>
-            </Box>
+           <HeaderImg page={page}/>
             <Box w='100%' justifyContent='center' p={{base:1, md:3, lg:5}} maxWidth='container.xl' margin='0 auto'>
                 <Flex h="100%" mt='20' mb='7' alignContent='center' px={{base:2, md:5, lg:10}} justifyContent="space-between" alignItems='flex-end'>
                     <Text fontSize="4xl" color="black" fontWeight="bold" >
-                        게시판 제목
+
                     </Text>
                     <InputGroup w='30%' alignContent='bottom'>
                         <InputRightElement pointerEvents='none'>
@@ -187,9 +177,9 @@ function BoardMain() {
                         />
                     </InputGroup>
                 </Flex>
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="5" maxWidth='container.xl' margin="0 auto" px={{base:2, md:5, lg:10}}>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="5" maxWidth='container.xl' margin="0 auto" px={{base:2, md:5, lg:10}} alignItems='center'>
                 {displayPosts.map((post, index) => (
-                    <PostCard key={index} {...post} />
+                    <PostCard key={index} {...post} page={page}/>
                 ))}
             </SimpleGrid>
             {!isLargeScreen && isLoading && (
@@ -218,6 +208,28 @@ function BoardMain() {
                     ))}
                 </HStack>
             )}
+                {page==='/board'|| userCheck.current ?(
+                <Tooltip label="새 글 작성" placement="top">
+                    <Button
+                        position="fixed"
+                        bottom={`${buttonPosition}px`}
+                        left="50%"
+                        transform="translateX(-50%)"
+                        colorScheme="blue"
+                        size="lg"
+                        borderRadius="full"
+                        boxShadow="lg"
+                        zIndex={1000}
+                        onClick={() => {navigate(page+"Write")}}
+                        transition="bottom 0.3s ease-out"
+                        _hover={{
+                            transform: "translateX(-50%) scale(1.05)",
+                        }}
+                    >
+                        글쓰기
+                    </Button>
+                </Tooltip>
+                    ) : null}
             </Box>
         </VStack>
     );

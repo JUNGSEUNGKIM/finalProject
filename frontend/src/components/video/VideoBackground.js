@@ -108,18 +108,18 @@ function VideoBackground() {
                 >
                     <HStack flexWrap="wrap" justifyContent="center">
                         <Heading className='typo01' as="h1" size={isMobile ? "xl" : "2xl"} mb={4}>
-                            비디오
+                         축제, 여행 /
                         </Heading>
                         <Heading className='typo02' as="h1" size={isMobile ? "xl" : "2xl"} mb={4}>
-                            배경 예제
+                         맛집, 시장
                         </Heading>
                     </HStack>
                     <HStack flexWrap="wrap" justifyContent="center">
                         <Text className='typo03' fontSize={isMobile ? "lg" : "xl"}>
-                            Chakra UI를 사용하여
+                           GARAGE 에서
                         </Text>
                         <Text className='typo04' fontSize={isMobile ? "lg" : "xl"}>
-                            비디오 배경을 설정하는 방법을 배우세요.
+                            당신의 여행을 찾으세요.
                         </Text>
                     </HStack>
                 </Flex>

@@ -1,6 +1,21 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import {Flex, IconButton, Stack, InputGroup, InputLeftElement, Input, Divider, HStack, useBreakpointValue, useColorMode, useDisclosure, Box, Button} from "@chakra-ui/react";
+import {
+    Flex,
+    IconButton,
+    Stack,
+    InputGroup,
+    InputLeftElement,
+    Input,
+    Divider,
+    HStack,
+    useBreakpointValue,
+    useColorMode,
+    useDisclosure,
+    Box,
+    Button,
+    Icon, Image, Text
+} from "@chakra-ui/react";
 import {CloseIcon,HamburgerIcon, SearchIcon} from "@chakra-ui/icons";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,12 +23,14 @@ import React, {useEffect, useRef, useState} from "react";
 import  {useNavigate, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import { setToken, clearToken } from '../../redux/slices/authSlice';
+import { ReactComponent as Logo } from '../../assets/css/logo.svg';
 gsap.registerPlugin(ScrollTrigger);
 
 
 function Header(props) {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
+    const nickName = useSelector((state)=> state.auth.nickName);
 
     const { variant, extra, children, ...rest } = props;
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -93,7 +110,7 @@ function Header(props) {
             height: isNavVisible ? 'auto' : 0,
             marginTop: isNavVisible ? 'auto' : 0,
             marginBottom: isNavVisible ? 'auto' : 0,
-            y: isNavVisible ? 0 : -50,
+            y: isNavVisible ? 0 : -100,
             duration: 0.3,
             ease: "power2.out",
             onComplete: () => {
@@ -103,10 +120,12 @@ function Header(props) {
 
     }, [isNavVisible]);
 
+
     return (
         <div color='white'>
 
-            <Flex flexDirection="column"  alignItems="center"  px={4} minWidth='370px'  ref={headerRef}
+
+            <Flex flexDirection="column"  alignItems="center"  px={4} minWidth='320px'  ref={headerRef}
                   position="fixed"
                   color='white'
                   width="100%"
@@ -118,8 +137,12 @@ function Header(props) {
                 <Box h='2vh'/>
 
                 <Flex h='4' mb='2' alignItems="center" justifyContent='flex-end' maxWidth='container.xl' w='100%' className='topNavigation'  >
-
+                    <HStack as="nav" textAlign='center' spacing={4} fontSize='0.8em' minWidth={{ base: '0', sm:'0', md: '182px' }} ></HStack>
+                    <HStack w='100%'>
+                        <Text w='100%' textAlign={{base: 'left', sm: 'left', md:'center'}} fontSize={{base:'xl',sm:'2xl', md:'3xl'}} fontWeight='bold'>G  A  R  A  G  E</Text>
+                    </HStack>
                     <HStack as="nav" textAlign='center' spacing={4} fontSize='0.8em' w='200px'>
+
                         {token==null?
                             <Box w='50px' onClick={()=>{navigate("/login")
                             }}><Button
@@ -171,12 +194,18 @@ function Header(props) {
                 </Flex>
                 <Divider />
                 <Box maxWidth="container.xl" w="100%">
-                    <Flex h={16} alignItems="center" justifyContent="space-between">
+                    <Flex h={16} alignItems="center" justifyContent="space-between" >
                         <HStack w={{ base: '20%', md: '20%' }}>
-                            <Box w='100%'>Logo</Box>
+                            <Box display='flex' alignItems='center' justifyContent='center' w='100%'
+                                 transition="transform 0.3s ease"
+                                 _hover={{cursor: 'pointer', '& h5': {transform: 'scale(1.1)'}}} onClick={()=>{navigate("/")}}>
+                                <Logo style={{width:'150px', height:'90px'}} />
+                                {/*<Text>GARAGE</Text>*/}
+                            </Box>
 
                         </HStack>
-                        <HStack textAlign='center' fontSize='0.8em' as="nav" spacing={4} w='60%' display={{ base: "none", md: "flex" }} alignItems="center" justifyContent="center" gap='10%' >
+                        <HStack textAlign='center' fontSize='0.8em' as="nav" spacing={4} w='60%'
+                                display={{base: "none", md: "flex"}} alignItems="center" justifyContent="center" gap='10%' >
                             {/*<Box w='50px'><IconButton*/}
                             {/*    className='icon-button'*/}
                             {/*    variant='ghost'*/}
@@ -189,7 +218,7 @@ function Header(props) {
                             {/*        _active: { bg: 'transparent', color: iconButtonColor === 'white' ? '#90EE90' : '#90EE90' },*/}
                             {/*    }}*/}
                             {/*/>HOME</Box>*/}
-                            <Box w='50px'><IconButton
+                            <Box w='50px' onClick={()=>{navigate("/location")}}><IconButton
                                 className='icon-button'
                                 variant='ghost'
                                 aria-label='My Menu'
@@ -226,7 +255,7 @@ function Header(props) {
                                     _active: { bg: 'transparent', color: iconButtonColor === 'white' ? '#90EE90' : '#90EE90' },
                                 }}
                             />게시판</Box>
-                            <Box w='50px'><IconButton
+                            <Box w='50px'  onClick={()=>{navigate("/store")}}><IconButton
                                 className='icon-button'
                                 variant='ghost'
                                 aria-label='My Menu'
@@ -249,7 +278,7 @@ function Header(props) {
                                     _hover: { bg: 'transparent', color: iconButtonColor === 'white' ? '#ADD8E6' : '#ADD8E6' },
                                     _active: { bg: 'transparent', color: iconButtonColor === 'white' ? '#90EE90' : '#90EE90' },
                                 }}
-                            />MY</Box>
+                            />{nickName ? nickName : "MY"}</Box>
                         </HStack>
 
                         <HStack w={{ base: '58%', md: '20%' }}>

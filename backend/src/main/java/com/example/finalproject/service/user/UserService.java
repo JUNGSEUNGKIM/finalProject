@@ -4,9 +4,10 @@ import com.example.finalproject.config.JwtTokenProvider;
 import com.example.finalproject.domain.UserInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
-    String userLogin(UserInfo user);
+    Map<String,String> userLogin(UserInfo user);
     UserInfo createUser(UserInfo user);
     UserInfo getUserById(String id);
     List<UserInfo> getAllUsers();

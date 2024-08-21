@@ -20,13 +20,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .authorizeHttpRequests((authz) -> authz
-//                .requestMatchers(HttpMethod.GET, "/public/**").permitAll() //public으로 드러오는 get은 모두 허용
-//                .requestMatchers(HttpMethod.POST, "/api/**").authenticated() // post로 api로 들어오는 모든 통신은 인증된 사용자에 한해 허용
-//                .anyRequest().authenticated())
+
                 .cors(httpSecurityCorsConfigurer ->
                 httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource())
-        ).csrf(csrf -> csrf.disable());  //csrf인증 토큰 비활성화
+        ).csrf(csrf -> csrf.disable())//csrf인증 토큰 비활성화
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .anyRequest().permitAll()
+//                        .anyRequest().authenticated() // 그 외 모든 요청은 인증 요구
+                );
         return http.build();
     }
 
@@ -46,3 +47,20 @@ public class SecurityConfig {
     }
 
 }
+//                .authorizeHttpRequests(authorize -> {
+//                    authorize.requestMatchers("/", "/static/**", "/public/**").permitAll();
+//                    authorize.requestMatchers("/api/**").authenticated();
+//                    authorize.anyRequest().authenticated();
+//                })
+
+//                .authorizeHttpRequests((authz) -> authz
+//                .requestMatchers(HttpMethod.GET, "/public/**").permitAll() //public으로 드러오는 get은 모두 허용
+//                .requestMatchers(HttpMethod.POST, "/api/**").authenticated() // post로 api로 들어오는 모든 통신은 인증된 사용자에 한해 허용
+//                .anyRequest().authenticated())
+//                .authorizeHttpRequests(authorize-> {
+//                    authorize.requestMatchers("/static/**", "/index.html", "/").permitAll(); // 정적 리소스와 루트 경로에 대한 접근 허용
+//                    authorize.anyRequest().authenticated();
+//                })// 다른 모든 요청에 대해 인증 요구
+
+
+

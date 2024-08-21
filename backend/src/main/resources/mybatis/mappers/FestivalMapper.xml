@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.finalproject.repository.mybatis.FestivalMapper">
+    <resultMap id="festivalResultMap" type="com.example.finalproject.domain.festival.FestivalList">
+        <result property="festivalid" column="festivalid" />
+        <result property="festivalname" column="festivalname" />
+        <result property="location" column="location" />
+        <result property="startdate" column="startdate" />
+        <result property="enddate" column="enddate" />
+        <result property="description" column="description" />
+        <result property="website" column="website" />
+        <result property="radaddress" column="radaddress" />
+        <result property="jibunaddress" column="jibunaddress" />
+        <result property="latitude" column="latitude" />
+        <result property="longitude" column="longitude" />
+    </resultMap>
+
+    <select id="festivalList" resultMap="festivalResultMap">
+        <![CDATA[
+        SELECT *
+        FROM festivals WHERE STARTDATE <= SYSDATE AND ENDDATE >= SYSDATE-14
+        ]]>
+    </select>
+
+</mapper>

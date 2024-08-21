@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.finalproject.service.user.UserService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,25 +26,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String userLogin(UserInfo userInfo) {
+    public Map<String,String> userLogin(UserInfo userInfo) {
+        Map<String, String> result = new HashMap<>();
         if (userInfo == null) {
-            return "fail:아이디와 비밀번호를 입력해 주세요";
+            result.put("fail","아이디와 비밀번호를 입력해 주세요");
+            return result;
         }
         String id = userInfo.getId();
         String pass = userInfo.getPassword();
         if (id == null || pass == null) {
-            return "fail:아이디와 비밀번호를 입력해 주세요";
+            result.put("fail","아이디와 비밀번호를 입력해 주세요");
+            return result;
         }
 
         userInfo = userMapper.checkedUser(userInfo);
         if(userInfo == null){
-            System.out.println("hello");
-
-            return "fail:아이디 또는 비밀번호가 맞지 않습니다. 다시 입력해 주세요.";
+            result.put("fail","아이디 또는 비밀번호가 맞지 않습니다. 다시 입력해 주세요.");
+            return result;
         }else {
             String token = jwtTokenProvider.generateToken(userInfo);
 //            System.out.println(":::::::::결과"+jwtTokenProvider.validateToken(token));
-            return "succeed:"+token;
+
+            result.put("succeed", token);
+            result.put("nickName", userInfo.getNickname());
+//            return "succeed:"+token;
+            return result;
         }
     }
 

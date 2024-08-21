@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 
 public class TestController {
-    @PostMapping("/hello")
+    @GetMapping("/hello")
     public String hello() {
         return "Hello from Spring Boot!";
     }

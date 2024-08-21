@@ -1,17 +1,14 @@
-## 프로젝트 페이지로 이동 = > &nbsp;&nbsp;&nbsp;&nbsp; [[Project GARAGE]](http://54.180.140.137:8081)  
+## 프로젝트 페이지로 이동 = > &nbsp;&nbsp;&nbsp;&nbsp; [[Project GARAGE]](http://13.125.6.22:8080)  
 &nbsp;&nbsp;&nbsp;&nbsp; **[id:user1 / password:password1]**
 
 ## 목차    
 
-### -팀원소개   
+### -소개   
     
  |  이름  | 백엔드(주요 프레임워크) | 개발환경 | DataBase | 프론트엔드 
 |--------|---------------------|-------------------------------|-----------------------------|-----------------------------|
 | 김정승 |    Spring Boot, Apache, python    |    IntelliJ IDEA , vim , Pycharm     | oracle 11g | HTML, javascript, css, React|
-| 노가현 |    Spring Boot, Apache, python    |    IntelliJ IDEA , vim , Pycharm     | oracle 11g | HTML, javascript, css, React|
-| 배호진 |    Spring Boot, Apache, python    |    IntelliJ IDEA , vim , Pycharm     | oracle 11g | HTML, javascript, css, React|
-| 배은지 |    Spring Boot, Apache, python    |    IntelliJ IDEA , vim , Pycharm     | oracle 11g | HTML, javascript, css, React|
-| 이은진 |    Spring Boot, Apache, python    |    IntelliJ IDEA , vim , Pycharm     | oracle 11g | HTML, javascript, css, React|
+
 
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"/> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
@@ -22,23 +19,16 @@
 <img src="https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"/>
 ---
 
-<a href="https://github.com/JUNGSEUNGKIM/codelap_project_4_Spring_React/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=JUNGSEUNGKIM/codelap_project_4_Spring_React" />
-</a>
 
-<a href="http://54.180.140.137:8081">
-<!--     <img src="./main.png"/> -->
-</a>
-
-[AWS 실행환경](http://54.180.140.137:8081)
+[AWS 실행환경](http://13.125.6.22:8080)
 
 ---
     
 ### 프로젝트개요
-+ 기간 : 2024년 5월 20일(월) ~ 2024년 6월 25일(화)
++ 기간 : 2024년 7월 30일(월) ~ 
 + 주제 :  대한민국 구석구석 축제, 공연, 맛집, 시장을 소개하며 국내 여행 코스를 제공, 유저들끼리 소통할 수 있는 웹 서비스 제작
 + 선정이유 : 기존 한공광관공사에서 운영하고 있는 사이트(대한민국 구석구석)을 분석하여, 보완할 부분을 찾아서 제작 선정
-+ (기존)사이트 보완점 : 주변 시장, 맛집도 함께 제공하여 사용자들과 소통할 수 있는 게시판 구성
++ 기존 프로젝트 고도화
 
 ---
 ### -페르소나

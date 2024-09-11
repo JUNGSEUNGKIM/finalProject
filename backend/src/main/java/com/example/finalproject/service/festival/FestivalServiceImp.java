@@ -1,5 +1,6 @@
 package com.example.finalproject.service.festival;
 
+import com.example.finalproject.domain.festival.FestivalApi;
 import com.example.finalproject.service.festival.FestivalService;
 import com.example.finalproject.config.JwtTokenProvider;
 import com.example.finalproject.domain.festival.FestivalList;
@@ -25,6 +26,13 @@ public class FestivalServiceImp implements FestivalService{
         List<FestivalList> festivalList = festvalMapper.festivalList();
 //        System.out.println(festivalList);
         return festivalList;
+    }
+
+    @Override
+    public List<FestivalApi> festivalApi(String lat, String lon){
+        System.out.println(lat+"::::::::::"+lon);
+
+        return null;
     }
 
 

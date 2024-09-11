@@ -17,7 +17,7 @@ import Footer from "./components/footer/Footer";
 import PostDetail from "./components/board/PostDetail";
 import PostWrite from "./components/board/PostWrite";
 
-import VideoBackgroundTest from "./components/festivalList/FestivalMap";
+import FestivalMap from "./components/festivalList/FestivalMap";
 import {useRef, useState} from "react";
 library.add(faHeartCircleCheck,faClipboard,faLocationDot,faStar,faStore,faHouse );
 
@@ -40,7 +40,7 @@ function App() {
                     <Route path="/store" element={<BoardMain page="/store"/>}/>
                     <Route path="/storedetail/:boarder_code" element={<PostDetail page="/store"/>}/>
                     <Route path="/storeWrite" element={<PostWrite page="/storecreate"/>}/>
-                    <Route path="/location" element={<VideoBackgroundTest/>}/>
+                    <Route path="/location" element={<FestivalMap/>}/>
                 </Routes>
                 {location.pathname !== '/location' && <Footer/>}
             </Provider>

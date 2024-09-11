@@ -3,52 +3,12 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, { useEffect, useRef, useState } from "react";
 import ListComponent from "./ListComponent";
+import MapComponent from "./MapComponent";
+import axios from "axios";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const MapComponent = ({ festivals, selectedFestival }) => {
-    const mapRef = useRef(null);
-    const mapInstance = useRef(null);
-    const markers = useRef([]);
 
-    useEffect(() => {
-        const mapOption = {
-            center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-            level: 3
-        };
-
-        mapInstance.current = new window.kakao.maps.Map(mapRef.current, mapOption);
-
-        // 모든 축제 위치에 마커 추가
-        festivals.forEach(festival => {
-            const marker = new window.kakao.maps.Marker({
-                position: new window.kakao.maps.LatLng(festival.lat, festival.lng)
-            });
-            marker.setMap(mapInstance.current);
-            markers.current.push(marker);
-        });
-    }, [festivals]);
-
-    useEffect(() => {
-        if (selectedFestival && mapInstance.current) {
-            const moveLatLon = new window.kakao.maps.LatLng(selectedFestival.lat, selectedFestival.lng);
-            mapInstance.current.setCenter(moveLatLon);
-        }
-    }, [selectedFestival]);
-
-    return (
-        <Box position="relative" height="100%" width="100%">
-            <Box
-                ref={mapRef}
-                position="absolute"
-                top="0"
-                left="0"
-                right="0"
-                bottom="0"
-            />
-        </Box>
-    );
-};
 
 function FestivalMap() {
     const [festivals, setFestivals] = useState([
@@ -67,31 +27,56 @@ function FestivalMap() {
         ]);
 
     const [selectedFestival, setSelectedFestival] = useState(null);
-
     const handleFestivalSelect = (festival) => {
         setSelectedFestival(festival);
     };
+    const location = useRef({latitude:"",longitude:""})
+    const fetchData = async (location) => {
+        // if(isLargeScreen){
+        //     window.scrollTo({
+        //         top:0 ,
+        //         behavior: 'smooth' // 부드러운 스크롤
+        //     });
+        console.log(location.current)
+        // }
+        try {
+            // console.log(page)
+            const [response] = await Promise.all([
+                axios.get( `${process.env.REACT_APP_FESTIVAL_URL}/festivalapi?lat=${location.current.latitude}&lon=${location.current.longitude}`,
+                    { withCredentials: true })
+            ]);
+            const responseData = response.data;
+
+            console.log(responseData)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            location.current = position.coords;
+            fetchData(location)
+        },(error) => {
+            console.error("Geolocation error:", error.code, error.message);
+            // 오류 처리 로직
+            location.current.latitude=37.1022885;
+            location.current.longitude=127.0222002;
+            fetchData(location)
+        });
+
+
+
+    },[])
     return (
-        // <div id="main-video">
-        //     <Box height="113vh" overflow="hidden" pt='17vh' background='black' width='100%'>
-        //         <Box height="83vh" overflow="hidden" position="relative" maxWidth={{ base: "100%", xl: "1440px"  }} margin='0 auto'>
-        //             <MapComponent />
-        //             <ListComponent />
-        //         </Box>
-        //     </Box>
-        // </div>
         <div id="main-video">
             <Box
                 height="100vh"
                 overflow="hidden"
-                // pt='17vh' background='black'
                 width='100%'>
                 <Box
-                    // height="83vh"  maxWidth={{base: "100%", xl: "1440px"}}
                     overflow="hidden"
                     w='100%'
                     h='100%'
-                    // position="relative"
 
                      margin='0 auto'>
                     <MapComponent

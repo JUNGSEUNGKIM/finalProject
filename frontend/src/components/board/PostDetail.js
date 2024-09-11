@@ -28,6 +28,8 @@ const PostDetail = ({page}) => {
 
     useEffect(() => {
         const overlay = overlayRef.current;
+        if(unmountCheckRef.current){fetchData(boarder_code)}
+        unmountCheckRef.current = false;
 
 
         gsap.to(overlay, {
@@ -41,8 +43,7 @@ const PostDetail = ({page}) => {
         });
         return () =>{
             // console.log(unmountCheckRef.current)
-            if(unmountCheckRef.current){fetchData(boarder_code)}
-            unmountCheckRef.current = false;
+
         }
     }, []);
 

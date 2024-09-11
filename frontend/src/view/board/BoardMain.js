@@ -41,6 +41,7 @@ function BoardMain({page}) {
     const navigate = useNavigate();
     const pageCheck = useRef(page)
     const userCheck = useRef()
+    const errorCheck = useRef(true);
 
 
     const token = useSelector((state) => state.auth.token);
@@ -65,6 +66,18 @@ function BoardMain({page}) {
             userCheck.current = responseData.userCheck;
             // console.log(displayPosts)
         } catch (error) {
+
+            if(errorCheck.current) {
+                setTimeout(() => {
+                    alert("로그인을 해주세요")
+                    navigate("/login")
+
+                    console.log("dd")
+                }, 3000);
+            }
+            errorCheck.current = false
+
+
             console.error('Error fetching data:', error);
         }
     };
@@ -177,11 +190,16 @@ function BoardMain({page}) {
                         />
                     </InputGroup>
                 </Flex>
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="5" maxWidth='container.xl' margin="0 auto" px={{base:2, md:5, lg:10}} alignItems='center'>
-                {displayPosts.map((post, index) => (
-                    <PostCard key={index} {...post} page={page}/>
-                ))}
-            </SimpleGrid>
+                {displayPosts.length !== 0 ? (
+                    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="5" maxWidth='container.xl' margin="0 auto" px={{base:2, md:5, lg:10}} alignItems='center'>
+                        {displayPosts.map((post, index) => (
+                            <PostCard key={index} {...post} page={page}/>
+                        ))}
+                    </SimpleGrid>
+                ) : (<Center mt={4}>
+                    <Spinner />
+                </Center>)}
+
             {!isLargeScreen && isLoading && (
                 <Center mt={4}>
                     <Spinner />

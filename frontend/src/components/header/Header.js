@@ -72,8 +72,9 @@ function Header(props) {
         // const currentScrollY = window.scrollY;
 
         gsap.to(header, {
-            backgroundColor: "rgba(255, 255, 255, 1)",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            // backgroundColor: "rgba(255, 255, 255, 1)",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.4)",
             duration: 0.3,
             ease: "power1.out",
             scrollTrigger: {
@@ -206,18 +207,7 @@ function Header(props) {
                         </HStack>
                         <HStack textAlign='center' fontSize='0.8em' as="nav" spacing={4} w='60%'
                                 display={{base: "none", md: "flex"}} alignItems="center" justifyContent="center" gap='10%' >
-                            {/*<Box w='50px'><IconButton*/}
-                            {/*    className='icon-button'*/}
-                            {/*    variant='ghost'*/}
-                            {/*    aria-label='My Menu'*/}
-                            {/*    fontSize='20px'*/}
-                            {/*    icon={<FontAwesomeIcon icon="fa-solid fa-house"/>}*/}
-                            {/*    sx={{*/}
-                            {/*        color: iconButtonColor,*/}
-                            {/*        _hover: { bg: 'transparent', color: iconButtonColor === 'white' ? '#ADD8E6' : '#ADD8E6' },*/}
-                            {/*        _active: { bg: 'transparent', color: iconButtonColor === 'white' ? '#90EE90' : '#90EE90' },*/}
-                            {/*    }}*/}
-                            {/*/>HOME</Box>*/}
+
                             <Box w='50px' onClick={()=>{navigate("/location")}}><IconButton
                                 className='icon-button'
                                 variant='ghost'
@@ -312,96 +302,73 @@ function Header(props) {
                     {isOpen ? (
                         <Box pb={4} display={{ md: "none" }}>
                             <Stack as="nav" spacing={4}>
-                                <Box>Home</Box>
-                                <Box>About</Box>
-                                <Box>Contact</Box>
+                                <Box onClick={()=>{navigate("/location")}}><IconButton
+                                    className='icon-button'
+                                    variant='ghost'
+                                    aria-label='My Menu'
+                                    fontSize='20px'
+                                    icon={<FontAwesomeIcon icon="fa-location-dot" />}
+                                    sx={{
+                                        color: iconButtonColor,
+                                        _hover: { bg: 'transparent', color: iconButtonColor === 'white' ? '#ADD8E6' : '#ADD8E6' },
+                                        _active: { bg: 'transparent', color: iconButtonColor === 'white' ? '#90EE90' : '#90EE90' },
+                                    }}
+                                />지역별</Box>
+                                <Box ><IconButton
+                                    className='icon-button'
+                                    variant='ghost'
+                                    aria-label='My Menu'
+                                    fontSize='20px'
+                                    icon={<FontAwesomeIcon icon="fa-sharp fa-star"/>}
+                                    sx={{
+                                        color: iconButtonColor,
+                                        _hover: { bg: 'transparent', color: iconButtonColor === 'white' ? '#ADD8E6' : '#ADD8E6' },
+                                        _active: { bg: 'transparent', color: iconButtonColor === 'white' ? '#90EE90' : '#90EE90' },
+                                    }}
+                                />추천</Box>
+                                <Box onClick={()=>{navigate("/board")}}><IconButton
+
+                                    className='icon-button'
+                                    variant='ghost'
+                                    aria-label='My Menu'
+                                    fontSize='20px'
+                                    icon={<FontAwesomeIcon icon="fa-clipboard" />}
+                                    sx={{
+                                        color: iconButtonColor,
+                                        _hover: { bg: 'transparent', color: iconButtonColor === 'white' ? '#ADD8E6' : '#ADD8E6' },
+                                        _active: { bg: 'transparent', color: iconButtonColor === 'white' ? '#90EE90' : '#90EE90' },
+                                    }}
+                                />게시판</Box>
+                                <Box  onClick={()=>{navigate("/store")}}><IconButton
+                                    className='icon-button'
+                                    variant='ghost'
+                                    aria-label='My Menu'
+                                    fontSize='20px'
+                                    icon={<FontAwesomeIcon icon="fa-solid fa-store"/>}
+                                    sx={{
+                                        color: iconButtonColor,
+                                        _hover: { bg: 'transparent', color: iconButtonColor === 'white' ? '#ADD8E6' : '#ADD8E6' },
+                                        _active: { bg: 'transparent', color: iconButtonColor === 'white' ? '#90EE90' : '#90EE90' },
+                                    }}
+                                />STORE</Box>
+                                <Box > <IconButton
+                                    className='icon-button'
+                                    variant='ghost'
+                                    aria-label='My Menu'
+                                    fontSize='20px'
+                                    icon={<FontAwesomeIcon icon="fa-solid fa-heart-circle-check" />}
+                                    sx={{
+                                        color: iconButtonColor,
+                                        _hover: { bg: 'transparent', color: iconButtonColor === 'white' ? '#ADD8E6' : '#ADD8E6' },
+                                        _active: { bg: 'transparent', color: iconButtonColor === 'white' ? '#90EE90' : '#90EE90' },
+                                    }}
+                                />{nickName ? nickName : "MY"}</Box>
                             </Stack>
                         </Box>
                     ) : null}
                 </Box>
                 <Divider my='5px'/>
 
-                {/*<Flex maxWidth='container.xl' fontSize='1em' justifyContent="space-between" w="100%" alignItems="center">*/}
-                {/*    <HStack>*/}
-
-                        {/*<Flex flexDirection="row" alignItems="center">*/}
-                        {/*    <Stack direction="row" h="100%" >*/}
-                        {/*        <Divider orientation="vertical" />*/}
-                        {/*    </Stack>*/}
-                            {/*<Menu w='100%'>*/}
-                            {/*    <MenuButton*/}
-                            {/*        as={IconButton}*/}
-                            {/*        aria-label="Options"*/}
-                            {/*        icon={<HamburgerIcon />}*/}
-                            {/*        variant="outline"*/}
-                            {/*    />*/}
-                            {/*    <MenuList w='1000px'>*/}
-                            {/*        <Flex>*/}
-                            {/*        <Flex flexDirection="column">*/}
-                            {/*            <MenuItem icon={<AddIcon />} command="⌘T" w='200px'>*/}
-                            {/*                 New Tab*/}
-                            {/*            </MenuItem>*/}
-                            {/*            <MenuItem icon={<ExternalLinkIcon />} command="⌘N"  w='200px'>*/}
-                            {/*                New Window*/}
-                            {/*            </MenuItem>*/}
-                            {/*            <MenuItem icon={<RepeatIcon />} command="⌘⇧N" w='200px'>*/}
-                            {/*                Open Closed Tab*/}
-                            {/*            </MenuItem>*/}
-                            {/*            <MenuItem icon={<EditIcon />} command="⌘O" w='200px'>*/}
-                            {/*                Open File...*/}
-                            {/*            </MenuItem>*/}
-                            {/*        </Flex>*/}
-                            {/*        <Flex flexDirection="column">*/}
-                            {/*            <MenuItem icon={<AddIcon />} command="⌘T" w='200px'>*/}
-                            {/*                New Tab*/}
-                            {/*            </MenuItem>*/}
-                            {/*            <MenuItem icon={<ExternalLinkIcon />} command="⌘N"  w='200px'>*/}
-                            {/*                New Window*/}
-                            {/*            </MenuItem>*/}
-                            {/*            <MenuItem icon={<RepeatIcon />} command="⌘⇧N" w='200px'>*/}
-                            {/*                Open Closed Tab*/}
-                            {/*            </MenuItem>*/}
-                            {/*            <MenuItem icon={<EditIcon />} command="⌘O" w='200px'>*/}
-                            {/*                Open File...*/}
-                            {/*            </MenuItem>*/}
-                            {/*        </Flex>*/}
-                            {/*        </Flex>*/}
-
-                            {/*    </MenuList>*/}
-                            {/*</Menu>*/}
-                        {/*    <Box mx="1em" fontSize="13px">*/}
-                        {/*        전체메뉴*/}
-                        {/*    </Box>*/}
-                        {/*    <Stack direction="row" h="100%">*/}
-                        {/*        <Divider orientation="vertical" />*/}
-                        {/*    </Stack>*/}
-                        {/*</Flex>*/}
-
-
-                        {/*{showMiddleNav && (*/}
-                        {/*    <HStack id={1} spacing={4}>*/}
-                        {/*        <Box>베스트</Box>*/}
-                        {/*        <Box>해외여행</Box>*/}
-                        {/*        <Box>항공</Box>*/}
-                        {/*        <Box>호텔</Box>*/}
-                        {/*        <Box>항공+호텔</Box>*/}
-                        {/*        <Box>투어/입장권</Box>*/}
-                        {/*        <Box>국내여행</Box>*/}
-                        {/*        <Box>테마여행</Box>*/}
-                        {/*        <Box>제우스</Box>*/}
-                        {/*        <Box>하나LIVE</Box>*/}
-                        {/*    </HStack>*/}
-                        {/*)}*/}
-                    {/*</HStack>*/}
-
-                    {/*<HStack id={2} spacing={4}>*/}
-                    {/*    <Box>여행기획전</Box>*/}
-                    {/*    <Box>맞춤여행</Box>*/}
-                    {/*    <Box>이달의 혜택</Box>*/}
-                    {/*</HStack>*/}
-                {/*</Flex>*/}
-
-                {/*<Divider my='5px'/>*/}
             </Flex>
 
 

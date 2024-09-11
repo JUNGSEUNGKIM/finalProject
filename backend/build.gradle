@@ -51,25 +51,25 @@ dependencies {
      * @author : 김정승
      * @description : frontend auto build, root build.gradle 에서 진행하려 하였지만 오류가 계속되어 여기서 진행
  */
-//bootJar {
-//    archiveFileName = 'myapp-backend.jar'
-//}
-//
-////build 생성 - js
-//task buildFrontend(type: Exec) {
-//    workingDir "${projectDir}/../frontend"
-//    commandLine "/opt/homebrew/bin/npm", "run", "build"
-//}
-////build copy -js
-//task copyFrontend(type: Copy) {
-//    dependsOn buildFrontend
-//    from("${projectDir}/../frontend/build")
-//    into("${projectDir}/src/main/resources/static")
-//}
-//// copyFrontend 실행 - js
-//processResources {
-//    dependsOn copyFrontend
-//}
+bootJar {
+    archiveFileName = 'myapp-backend.jar'
+}
+
+//build 생성 - js
+task buildFrontend(type: Exec) {
+    workingDir "${projectDir}/../frontend"
+    commandLine "/opt/homebrew/bin/npm", "run", "build"
+}
+//build copy -js
+task copyFrontend(type: Copy) {
+    dependsOn buildFrontend
+    from("${projectDir}/../frontend/build")
+    into("${projectDir}/src/main/resources/static")
+}
+// copyFrontend 실행 - js
+processResources {
+    dependsOn copyFrontend
+}
 
 tasks.named('test') {
     useJUnitPlatform()

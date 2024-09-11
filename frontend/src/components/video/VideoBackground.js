@@ -2,12 +2,12 @@ import { Box, Flex, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, { useEffect, useRef, useState } from "react";
-
 gsap.registerPlugin(ScrollTrigger);
 
 function VideoBackground() {
     const bodyRef = useRef();
     const [isMobile, setIsMobile] = useState(false);
+
 
     useEffect(() => {
         const checkMobile = () => {
@@ -75,6 +75,7 @@ function VideoBackground() {
         };
     }, [isMobile]);
 
+
     return (
         <div id="main-video">
             <Box position="relative" height="100vh" overflow="hidden" width='100%' ref={bodyRef}>
@@ -93,10 +94,13 @@ function VideoBackground() {
                     objectFit='cover'
                     transform="translate(-50%, -50%)"
                     zIndex="-1"
+                    rel="preload"
                 >
-                    <source src="12052297_3840_2160_60fps.mp4" type="video/mp4" />
+                    <source src={`${process.env.REACT_APP_IMG_URL}backgroundVideo.mp4`} type="video/mp4" />
                     Your browser does not support the video tag.
                 </Box>
+
+
                 <Flex
                     direction="column"
                     align="center"

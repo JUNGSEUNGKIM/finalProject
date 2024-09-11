@@ -47,8 +47,9 @@ function PostWrite({page}) {
     const [propsCheck,setPropsCheck] = useState(page==="/boardcreate");
     const token = useSelector((state) => state.auth.token);
     useEffect(() => {
+        festivalData();
         return () =>{
-            festivalData();
+
         }
     }, []);
 

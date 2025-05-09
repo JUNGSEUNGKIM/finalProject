@@ -9,7 +9,7 @@ plugins {
      * @description : // chatGPT 에서 여기서도 진행하라고 하였지만 필요없어서 삭제
                       // build.gradle 도 필요없는 듯 하다
  */
-
+//  ------------------------------
 //task installDependencies(type: Exec) {
 //    workingDir 'frontend'
 //    commandLine 'npm', 'install'
@@ -18,4 +18,4 @@ plugins {
 //tasks.named('build') {
 //    dependsOn installDependencies, ":buildFrontend"
 //}
-
+// ---------------------------------

@@ -46,11 +46,15 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 /*
+     * create
+     * code :  js_20240725
      * @name : build.gradle
      * @date : 2024. 7. 25.
      * @author : 김정승
      * @description : frontend auto build, root build.gradle 에서 진행하려 하였지만 오류가 계속되어 여기서 진행
+                      * 66 line fix - js 0723 - code add
  */
+// ---------------------------------------------------
 bootJar {
     archiveFileName = 'myapp-backend.jar'
 }
@@ -60,6 +64,7 @@ task buildFrontend(type: Exec) {
     workingDir "${projectDir}/../frontend"
     commandLine "/opt/homebrew/bin/npm", "run", "build"
 }
+
 //build copy -js
 task copyFrontend(type: Copy) {
     dependsOn buildFrontend
@@ -70,7 +75,7 @@ task copyFrontend(type: Copy) {
 processResources {
     dependsOn copyFrontend
 }
-
+// -------------------close  code : js_20240725 -------------------------------
 tasks.named('test') {
     useJUnitPlatform()
 }
